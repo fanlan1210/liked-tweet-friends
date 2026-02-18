@@ -3,12 +3,7 @@ const vm = Vue.createApp({
     return {
       isResulted: false,
       me: 'Myself',
-      liked: {
-        username: 'unknown',
-        screen_name: 'null',
-        count: 0,
-        img: '#'
-      }
+      topFriends: []
     }
   },
   methods: {
@@ -63,24 +58,19 @@ const vm = Vue.createApp({
         // We can double check if we want to count strict replies specifically, but user_mentions covers both.
       });
 
-      // Find top interaction
-      let topUser = null;
-      let maxCount = -1;
+      // Convert counts to array and sort
+      const sortedInteractions = Object.values(interactionCounts).sort((a, b) => b.count - a.count);
 
-      for (const [id, data] of Object.entries(interactionCounts)) {
-        if (data.count > maxCount) {
-          maxCount = data.count;
-          topUser = data;
-        }
-      }
+      // Get top 3
+      const top3 = sortedInteractions.slice(0, 3);
 
-      if (topUser) {
-        this.liked = {
-          username: topUser.name,
-          screen_name: topUser.screen_name,
-          count: topUser.count,
-          img: '#' // Images are not available in tweets.js typically
-        };
+      if (top3.length > 0) {
+        this.topFriends = top3.map(user => ({
+          username: user.name,
+          screen_name: user.screen_name,
+          count: user.count,
+          img: '#'
+        }));
         this.isResulted = true;
       } else {
         Swal.fire('提示', '最近三個月內沒有找到互動記錄', 'info');
