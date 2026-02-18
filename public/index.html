@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- <link rel="icon" href="https://glitch.com/favicon.ico" /> -->
+
+
+  <title>我的推特互動圈</title>
+
+  <!-- Meta tags for SEO and social sharing -->
+  <link rel="canonical" href="" />
+  <meta name="description" content="分析您的 tweets.js 檔案，查看最近三個月最常互動的朋友" />
+  <meta property="og:title" content="我的推特互動圈 (Local Client)" />
+  <meta property="og:description" content="分析您的 tweets.js 檔案，查看最近三個月最常互動的朋友" />
+  <!--meta
+      property="og:image"
+      content=""
+    /-->
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Import the webpage's stylesheet -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Akshar&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css" />
+
+  <!-- Import the webpage's javascript file -->
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script src="/script.js" defer></script>
+</head>
+
+<body class="bg-primary min-h-screen" id="app">
+  <div v-show="!isResulted">
+    <div class="max-w-2xl mx-auto p-8">
+      <div class="w-full flex justify-center">
+        <div class="flex flex-col items-center gap-4">
+          <p class="text-white mb-2">請上傳您的 <code>tweets.js</code> 檔案 (位於 Twitter Archive 的 data 資料夾中)</p>
+          <input type="file" accept=".js" @change="handleFileUpload" class="block w-full text-sm text-slate-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-violet-50 file:text-violet-700
+              hover:file:bg-violet-100
+            " />
+        </div>
+      </div>
+    </div>
+  </div>
+  <transition>
+    <div v-if="isResulted">
+      <div class="bg-primary">
+        <div class="max-w-2xl mx-auto p-8">
+          <p class="text-primary text-center p-4 text-2xl">
+            我的推特互動圈<br>
+            @{{ me }}
+          </p>
+          <div class="bg-lightgray mb-2 p-2 rounded-3xl">
+            <div class="bg-error m-1 p-4 rounded-3xl text-white">
+              <p class="text-xl pb-1">最近三個月最常互動 (Replies & Mentions)</p>
+              <div class="flex justify-center p-5 flex-wrap w-full">
+                <div class="basis-1/2 md:basis-1/3 flex-initial">
+                  <img v-if="liked.img && liked.img !== '#'" class="object-scale-down rounded-full" :src="liked.img">
+                  <div v-else
+                    class="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center text-4xl text-black">?
+                  </div>
+                </div>
+                <div class="text-center md:text-left flex flex-col justify-center flex-1 md:ml-12">
+                  <p class="text-3xl font-medium p-2">{{ liked.username }}</p>
+                  <p class="text-2xl font-medium p-2">@{{ liked.screen_name }} <span class="text-sm">({{ liked.count }}
+                      interactions)</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+
+
+  <div class="h-100 absolute inset-x-0 bottom-0">
+    <p class="bg-darkprimary text-center text-primary">
+      頁面測試中
+    </p>
+  </div>
+</body>
+
+</html>

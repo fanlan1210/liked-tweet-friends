@@ -1,0 +1,43 @@
+.bg-primary {
+  background-color: #D3DB65;
+}
+
+.bg-darkprimary {
+  background-color: #C7BF67;
+}
+
+.bg-lightgray {
+  background-color: #EEEEAA;
+}
+
+.bg-error {
+  background-color: #ea6070;
+}
+
+.bg-warning {
+  background-color: #f6c86a;
+}
+
+.text-primary {
+  color: #474525;
+}
+@font-face {
+  font-family: FakePearl-Regular;
+  src: url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-Regular.woff2) format("woff2")
+  , url(https://cdn.jsdelivr.net/gh/max32002/FakePearl@1.1/webfont/FakePearl-Regular.woff) format("woff");
+}
+body {
+  font-family: 'Akshar', "FakePearl-Regular", sans-serif;
+}
+
+.v-enter-active, .v-leave-active {
+  transition: opacity 1s;
+}
+
+.v-enter-from, .v-leave-to {
+  opacity: 0;
+}
+
+.v-enter-to, .v-leave-from {
+  opacity: 1;
+}
