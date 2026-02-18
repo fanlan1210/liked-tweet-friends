@@ -8,12 +8,12 @@
   <!-- <link rel="icon" href="https://glitch.com/favicon.ico" /> -->
 
 
-  <title>我的推特互動圈</title>
+  <title>我的推特互動排名</title>
 
   <!-- Meta tags for SEO and social sharing -->
   <link rel="canonical" href="" />
   <meta name="description" content="在裝置端分析您的 tweets.js 檔案，查看近期最常互動的朋友" />
-  <meta property="og:title" content="我的推特互動圈" />
+  <meta property="og:title" content="我的推特互動排名" />
   <meta property="og:description" content="在裝置端分析您的 tweets.js 檔案，查看近期最常互動的朋友" />
   <!--meta
       property="og:image"
@@ -38,6 +38,9 @@
 <body class="bg-primary min-h-screen" id="app">
   <div v-show="!isResulted">
     <div class="max-w-2xl mx-auto p-8">
+      <p class="text-2xl text-center pb-8">
+        我的推特互動排名
+      </p>
       <div class="w-full flex justify-center">
         <div class="flex flex-col items-center gap-4">
           <p class="text-white mb-2">請上傳您的 <code>tweets.js</code> 檔案 (位於 X/Twitter 封存檔的 data 資料夾中)</p>
@@ -58,7 +61,7 @@
         <div class="max-w-2xl mx-auto p-8">
           <div class="text-primary p-4 text-center">
             <p class="text-2xl">
-              我的推特互動圈<!--br>
+              我的推特互動排名<!--br>
               @{{ me }} -->
             </p>
             <p class="text-xl">近期最常互動 (回覆與提及)</p>
