@@ -41,7 +41,11 @@
       </p>
       <div class="w-full flex justify-center">
         <div class="flex flex-col items-center gap-4">
-          <p class="text-white mb-2">請上傳您的 <code>tweets.js</code> 檔案 (位於 X/Twitter 封存檔的 data 資料夾中)</p>
+          <p class="text-white mb-2">
+            請選取您的 <code>tweets.js</code> 檔案 (位於 X / Twitter 封存檔的 data 資料夾中)
+            <small class="underline pl-2"><a href="https://x.com/settings/download_your_data"
+                target="_blank">下載/取得封存檔</a></small>
+          </p>
           <input type="file" accept=".js" @change="handleFileUpload" class="block w-full text-sm text-slate-500
               file:mr-4 file:py-2 file:px-4
               file:rounded-full file:border-0
