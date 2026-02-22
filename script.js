@@ -3,7 +3,12 @@ const vm = Vue.createApp({
     return {
       isResulted: false,
       me: 'Myself',
-      topFriends: []
+      topFriends: [],
+      showSettings: false,
+      settings: {
+        displayInteractionCount: false,
+        displayRankOrderNumber: true
+      }
     }
   },
   methods: {

@@ -33,7 +33,20 @@
   <script src="script.js" defer></script>
 </head>
 
-<body class="bg-primary min-h-screen" id="app">
+<body class="bg-primary min-h-screen relative" id="app">
+  <!-- Settings Button -->
+  <button @click="showSettings = true"
+    class="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-20 flex items-center justify-center">
+    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="32" viewBox="0 0 24 24"
+      width="32">
+      <g>
+        <path d="M0,0h24v24H0V0z" fill="none" />
+        <path fill="currentColor"
+          d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
+      </g>
+    </svg>
+  </button>
+
   <div v-show="!isResulted">
     <div class="max-w-2xl mx-auto p-8">
       <p class="text-2xl text-center pb-8">
@@ -72,7 +85,8 @@
             <div v-for="(friend, index) in topFriends" :key="friend.screen_name"
               class="bg-error m-1 p-4 rounded-3xl text-white mb-4">
               <div class="flex justify-center p-2 flex-wrap w-full items-center">
-                <div class="text-4xl font-bold mr-4 opacity-50">#{{ index + 1 }}</div>
+                <div v-if="settings.displayRankOrderNumber" class="text-4xl font-bold mr-4 opacity-50">#{{ index + 1 }}
+                </div>
                 <div v-if="friend.img && friend.img !== '#'" class="basis-16 flex-initial mr-4">
                   <img class="object-scale-down rounded-full w-16 h-16" :src="friend.img">
                 </div>
@@ -83,7 +97,7 @@
                       @{{ friend.screen_name }}
                     </a>
                   </p>
-                  <!-- <p class="text-sm opacity-70">{{ friend.count }} interactions</p> -->
+                  <p v-if="settings.displayInteractionCount" class="text-sm opacity-70 mt-1">{{ friend.count }} 次互動</p>
                 </div>
               </div>
             </div>
@@ -94,13 +108,52 @@
   </transition>
 
 
-  <div class="h-100 absolute inset-x-0 bottom-0">
-    <p class="bg-darkprimary text-center text-primary">
+  <div class="h-100 absolute inset-x-0 bottom-0 pointer-events-none">
+    <p class="bg-darkprimary text-center text-primary pointer-events-auto">
       ［頁面測試中］
     </p>
-    <p class="bg-darkprimary text-center text-primary">
+    <p class="bg-darkprimary text-center text-primary pointer-events-auto">
       目前查詢範圍為近三個月，分析均在裝置端完成
     </p>
+  </div>
+
+  <!-- Settings Modal -->
+  <div v-if="showSettings"
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity"
+    @click.self="showSettings = false">
+    <div class="bg-[#2c2c2c] rounded-3xl p-8 w-96 max-w-[90%] shadow-2xl border border-gray-700">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-white">設定</h2>
+        <button @click="showSettings = false" class="text-gray-400 hover:text-white transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+            class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <span class="text-lg text-gray-200 font-medium">顯示互動次數</span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" v-model="settings.displayInteractionCount" class="sr-only peer">
+            <div
+              class="w-14 h-7 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-indigo-500">
+            </div>
+          </label>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <span class="text-lg text-gray-200 font-medium">顯示排名序號</span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" v-model="settings.displayRankOrderNumber" class="sr-only peer">
+            <div
+              class="w-14 h-7 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-indigo-500">
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 
