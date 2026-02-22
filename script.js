@@ -90,6 +90,74 @@ const vm = Vue.createApp({
         counts[id] = { count: 0, name, screen_name };
       }
       counts[id].count++;
+    },
+
+    captureScreenshot() {
+      const captureArea = document.getElementById('capture-area');
+      if (!captureArea) return;
+
+      // Ensure the capture area has a complete rendered state before taking the screenshot
+      // Use html2canvas
+      html2canvas(captureArea, {
+        scale: 2, // Higher resolution
+        useCORS: true,
+        backgroundColor: window.getComputedStyle(captureArea).backgroundColor
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'my-twitter-top-friends.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(err => {
+        console.error('Screenshot failed:', err);
+        Swal.fire('錯誤', '截圖失敗，請稍後再試', 'error');
+      });
+    },
+
+    async shareNative() {
+      const shareData = {
+        title: '我的推特互動排名',
+        text: '看看我近期在 X / Twitter 上最常互動的朋友！\n#我的推特互動排名\n',
+        url: window.location.href
+      };
+
+      if (!navigator.share) {
+        Swal.fire('提示', '您的裝置或瀏覽器不支援原生分享功能', 'info');
+        return;
+      }
+
+      try {
+        const captureArea = document.getElementById('capture-area');
+        if (captureArea) {
+          // Add loading state or feedback if needed
+          const canvas = await html2canvas(captureArea, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: window.getComputedStyle(captureArea).backgroundColor
+          });
+
+          canvas.toBlob(async (blob) => {
+            if (blob) {
+              const file = new File([blob], 'my-twitter-top-friends.png', { type: 'image/png' });
+
+              if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                shareData.files = [file];
+              }
+            }
+
+            await navigator.share(shareData);
+          }, 'image/png');
+        } else {
+          // Fallback if capture area isn't found
+          await navigator.share(shareData);
+        }
+      } catch (err) {
+        console.error('Error sharing:', err);
+      }
+    }
+  },
+  computed: {
+    canShare() {
+      return navigator.share;
     }
   }
 });
