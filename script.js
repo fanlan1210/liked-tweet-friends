@@ -102,12 +102,12 @@ const vm = Vue.createApp({
         scale: 2, // Higher resolution
         useCORS: true,
         backgroundColor: window.getComputedStyle(captureArea).backgroundColor,
-        width: 768,
-        windowWidth: 768,
+        width: 425,
+        windowWidth: 425,
         onclone: (document) => {
           const el = document.getElementById('capture-area');
           if (el) {
-            el.style.width = '768px';
+            el.style.width = '425px';
             el.style.maxWidth = 'none'; // reset tailwind constraint just in case
           }
         }
@@ -142,12 +142,12 @@ const vm = Vue.createApp({
             scale: 2,
             useCORS: true,
             backgroundColor: window.getComputedStyle(captureArea).backgroundColor,
-            width: 768,
-            windowWidth: 768,
+            width: 425,
+            windowWidth: 425,
             onclone: (document) => {
               const el = document.getElementById('capture-area');
               if (el) {
-                el.style.width = '768px';
+                el.style.width = '425px';
                 el.style.maxWidth = 'none';
               }
             }
