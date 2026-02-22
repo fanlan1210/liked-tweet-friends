@@ -74,35 +74,33 @@
   </div>
   <transition>
     <div v-if="isResulted" class="pb-20">
-      <div class="bg-primary" id="capture-area">
-        <div class="max-w-2xl mx-auto p-8 pb-4">
-          <div class="text-primary p-4 text-center">
-            <p class="text-2xl">
-              我的推特互動排名<!--br>
+      <div class="max-w-2xl mx-auto p-8 pb-4 bg-primary" id="capture-area">
+        <div class="text-primary p-4 text-center">
+          <p class="text-2xl">
+            我的推特互動排名<!--br>
               @{{ me }} -->
-            </p>
-            <p class="text-xl">近期最常互動 (回覆與提及)</p>
-          </div>
-          <div class="bg-lightgray mb-2 p-2 rounded-3xl">
-            <div v-for="(friend, index) in topFriends" :key="friend.screen_name"
-              class="bg-error m-1 p-4 rounded-3xl text-white mb-4">
-              <div class="flex justify-center p-2 flex-wrap w-full items-center">
-                <div v-if="settings.displayRankOrderNumber" class="text-4xl font-bold mr-4 opacity-50">#{{ index + 1 }}
-                </div>
-                <div v-if="friend.img && friend.img !== '#'" class="basis-16 flex-initial mr-4">
-                  <img class="object-scale-down rounded-full w-16 h-16" :src="friend.img">
-                </div>
-                <div class="text-left flex flex-col justify-center flex-1" style="line-height: 1.2;">
-                  <p class="text-2xl font-medium m-0 p-0">{{ friend.username }}</p>
-                  <p class="text-xl font-medium opacity-80 m-0 p-0 leading-tight">
-                    <a :href="'https://twitter.com/' + friend.screen_name" target="_blank"
-                      style="text-decoration: none; color: inherit;">
-                      @{{ friend.screen_name }}
-                    </a>
-                  </p>
-                  <p v-if="settings.displayInteractionCount" class="text-sm opacity-70 mt-1 m-0 p-0 leading-tight">{{
-                    friend.count }} 次互動</p>
-                </div>
+          </p>
+          <p class="text-xl">近期最常互動 (回覆與提及)</p>
+        </div>
+        <div class="bg-lightgray mb-2 p-4 rounded-3xl grid grid-cols-1 gap-4">
+          <div v-for="(friend, index) in topFriends" :key="friend.screen_name"
+            class="bg-error p-4 rounded-3xl text-white">
+            <div class="flex justify-center p-2 flex-wrap w-full items-center">
+              <div v-if="settings.displayRankOrderNumber" class="text-4xl font-bold mr-4 opacity-50">#{{ index + 1 }}
+              </div>
+              <div v-if="friend.img && friend.img !== '#'" class="basis-16 flex-initial mr-4">
+                <img class="object-scale-down rounded-full w-16 h-16" :src="friend.img">
+              </div>
+              <div class="text-left flex flex-col justify-center flex-1" style="line-height: 1.2;">
+                <p class="text-2xl font-medium m-0 p-0">{{ friend.username }}</p>
+                <p class="text-xl font-medium opacity-80 m-0 p-0 leading-tight">
+                  <a :href="'https://twitter.com/' + friend.screen_name" target="_blank"
+                    style="text-decoration: none; color: inherit;">
+                    @{{ friend.screen_name }}
+                  </a>
+                </p>
+                <p v-if="settings.displayInteractionCount" class="text-sm opacity-70 mt-1 m-0 p-0 leading-tight">{{
+                  friend.count }} 次互動</p>
               </div>
             </div>
           </div>
