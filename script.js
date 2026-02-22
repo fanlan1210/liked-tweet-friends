@@ -97,11 +97,20 @@ const vm = Vue.createApp({
       if (!captureArea) return;
 
       // Ensure the capture area has a complete rendered state before taking the screenshot
-      // Use html2canvas
+      // Use html2canvas with fixed 768px width (approx tailwind max-w-2xl)
       html2canvas(captureArea, {
         scale: 2, // Higher resolution
         useCORS: true,
-        backgroundColor: window.getComputedStyle(captureArea).backgroundColor
+        backgroundColor: window.getComputedStyle(captureArea).backgroundColor,
+        width: 768,
+        windowWidth: 768,
+        onclone: (document) => {
+          const el = document.getElementById('capture-area');
+          if (el) {
+            el.style.width = '768px';
+            el.style.maxWidth = 'none'; // reset tailwind constraint just in case
+          }
+        }
       }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'my-twitter-top-friends.png';
@@ -132,7 +141,16 @@ const vm = Vue.createApp({
           const canvas = await html2canvas(captureArea, {
             scale: 2,
             useCORS: true,
-            backgroundColor: window.getComputedStyle(captureArea).backgroundColor
+            backgroundColor: window.getComputedStyle(captureArea).backgroundColor,
+            width: 768,
+            windowWidth: 768,
+            onclone: (document) => {
+              const el = document.getElementById('capture-area');
+              if (el) {
+                el.style.width = '768px';
+                el.style.maxWidth = 'none';
+              }
+            }
           });
 
           canvas.toBlob(async (blob) => {
